@@ -7,13 +7,17 @@ if [ -z "${PROXIED_PORT}" ]; then
     exit 2
 fi
 
-C=$(docker run -d "$@")
+if [ -n "${PROXIED_NAME}" ]; then
+    XARGS="--name ${PROXIED_NAME}.$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1)"
+fi
+
+C=$(docker run -d $XARGS "$@")
 CIP=$(docker inspect $C -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}')
 
 if [[ "${PROXIED_PROTO}" == "udp" ]]; then
-    socat UDP4-RECVFROM:${PROXIED_PORT},fork UDP4-SENDTO:$CIP:${PROXIED_PORT} &
+    socat UDP4-LISTEN:${PROXIED_PORT},fork UDP4:$CIP:${PROXIED_PORT} &
 else
     socat TCP4-LISTEN:${PROXIED_PORT},fork TCP4:$CIP:${PROXIED_PORT} &
 fi
 
-docker attach $C
+exec docker attach $C
