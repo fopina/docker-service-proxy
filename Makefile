@@ -21,3 +21,13 @@ test: build
 			   -e PROXIED_PORT=80 \
 			   ${IMAGE}:test \
 			   nginx:1.17
+
+test-udp: build
+	docker run --rm \
+	           -ti \
+			   -v /var/run/docker.sock:/var/run/docker.sock \
+			   -p 53:53/udp \
+			   -e PROXIED_PORT=53 \
+			   -e PROXIED_PROTO=udp \
+			   ${IMAGE}:test \
+			   gists/dnsmasq
