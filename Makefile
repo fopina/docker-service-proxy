@@ -1,5 +1,5 @@
 IMAGE = fopina/swarm-service-proxy
-VERSION = 1
+VERSION = 2
 
 build:
 	docker build -t ${IMAGE}:test \
@@ -19,8 +19,8 @@ test: build
 			   -v /var/run/docker.sock:/var/run/docker.sock \
 			   -p 9999:80 \
 			   -e PROXIED_PORT=80 \
-			   ${IMAGE}:test \
-			   nginx:1.17
+			   -e PROXIED_IMAGE=nginx:1.17 \
+			   ${IMAGE}:test
 
 test-udp: build
 	docker run --rm \
@@ -29,5 +29,5 @@ test-udp: build
 			   -p 53:53/udp \
 			   -e PROXIED_PORT=53 \
 			   -e PROXIED_PROTO=udp \
-			   ${IMAGE}:test \
-			   gists/dnsmasq
+			   -e PROXIED_IMAGE=gists/dnsmasq \
+			   ${IMAGE}:test
