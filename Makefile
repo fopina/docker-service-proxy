@@ -1,5 +1,5 @@
 IMAGE = fopina/swarm-service-proxy
-VERSION = 3
+VERSION = 4
 
 build:
 	docker build -t ${IMAGE}:test \
@@ -20,6 +20,7 @@ test: build
 			   -p 9999:80 \
 			   -e PROXIED_PORT=80 \
 			   -e PROXIED_IMAGE=nginx:1.17 \
+			   -e PROXIED_FLAGS="-e A='test env with spaces'" \
 			   ${IMAGE}:test
 
 test-udp: build

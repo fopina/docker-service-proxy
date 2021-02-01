@@ -17,7 +17,9 @@ if [ -n "${PROXIED_NAME}" ]; then
 fi
 
 [[ "${PROXIED_PULL}" == "true" ]] && docker pull ${PROXIED_IMAGE}
-C=$(docker run -d $XARGS ${PROXIED_FLAGS} ${PROXIED_IMAGE} "$@")
+# use "sh -c" to properly expand possible spaces in PROXIED_FLAGS
+# can $* work here? $@ does not...
+C=$(sh -c "docker run -d $XARGS ${PROXIED_FLAGS} ${PROXIED_IMAGE} $*")
 CIP=$(docker inspect $C -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}')
 
 if [[ "${PROXIED_PROTO}" == "udp" ]]; then
