@@ -1,5 +1,5 @@
 IMAGE = fopina/swarm-service-proxy
-VERSION = 4
+VERSION = 5
 
 build:
 	docker build -t ${IMAGE}:test \
@@ -32,3 +32,11 @@ test-udp: build
 			   -e PROXIED_PROTO=udp \
 			   -e PROXIED_IMAGE=gists/dnsmasq \
 			   ${IMAGE}:test
+
+docker-version: build
+	docker run --rm \
+	           -ti \
+			   -v /var/run/docker.sock:/var/run/docker.sock \
+			   --entrypoint '' \
+			   ${IMAGE}:test \
+			   docker version

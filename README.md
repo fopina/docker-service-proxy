@@ -12,7 +12,7 @@ As this is a non-privileged container that can be scheduled in a swarm cluster b
 * PROXIED_IMAGE: the image to use for the target container
 * PROXIED_FLAGS: the flags to use with docker run (optional: defaults to none, `-d` is always implicit)
 * PROXIED_PULL: always pull target image before creating target container (defaults to `false`)
-* PROXIED_PORT: the port in the target container (required)
+* PROXIED_PORT: the port in the target container (if not specific, TCP/UDP proxy won't be setup)
 * PROXIED_NAME: the name of the target container (optional: defaults to normal docker random nanes)
 * PROXIED_PROTO: protocol to be proxied, `udp` or `tcp` (defaults to `tcp`)
 
