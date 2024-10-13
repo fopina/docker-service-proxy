@@ -1,12 +1,12 @@
 IMAGE = fopina/swarm-service-proxy
-VERSION = 6
+VERSION = 6-beta
 
 build:
 	docker build -t ${IMAGE}:test \
 				 .
 release:
 	docker buildx build \
-           --platform linux/amd64,linux/arm64,linux/arm/v7 \
+           --platform linux/amd64,linux/arm64 \
            --build-arg VERSION=${VERSION} \
            --push \
            -t ${IMAGE}:${VERSION} \
