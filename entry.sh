@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
@@ -21,7 +21,8 @@ if [ -n "${PROXIED_PORT}" ]; then
     if [[ "${PROXIED_PROTO}" == "udp" ]]; then
         socat UDP4-LISTEN:${PROXIED_PORT},fork UDP4:$CIP:${PROXIED_PORT} &
     else
-        socat TCP4-LISTEN:${PROXIED_PORT},fork TCP4:$CIP:${PROXIED_PORT} &
+        # socat TCP4-LISTEN:${PROXIED_PORT},fork TCP4:$CIP:${PROXIED_PORT} &
+        simpleproxy -L ${PROXIED_PORT} -R ${CIP}:${PROXIED_PORT}
     fi
 fi
 

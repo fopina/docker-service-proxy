@@ -1,5 +1,5 @@
 IMAGE = fopina/swarm-service-proxy
-VERSION = 5
+VERSION = 6
 
 build:
 	docker build -t ${IMAGE}:test \
